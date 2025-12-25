@@ -1,0 +1,132 @@
+TAS Discord Roblox Bot - Kurulum ve Kullanım
+
+1) Gereksinimler
+- Node.js 18+ (önerilen: 20+)
+- Discord sunucusunda bot yetkisi
+- Roblox Open Cloud API Key (rank okuma/değiştirme için)
+- (Opsiyonel) Roblox .ROBLOSECURITY cookie (branştan-at için)
+
+2) İlk Kurulum
+A) Dosyaları hazırlama
+- .env.example dosyasını kopyala ve adını .env yap.
+- .env dosyasını doldur.
+
+B) Gerekli .env değerleri
+Not: Bir .env dosyası oluşturmanız gerekiyor.
+# Discord
+DISCORD_TOKEN=            (Bot token)
+DISCORD_CLIENT_ID=        (Application ID)
+DISCORD_GUILD_ID=         (Botun çalışacağı tek sunucunun ID’si)
+ACTIVE_CHANNEL_ID=        (Komutların kullanılacağı tek kanalın ID’si)
+OWNER_DISCORD_ID=         (Owner Discord user ID)
+
+# Roblox
+MAIN_GROUP_ID=            (Ana Roblox grubun ID’si)
+ROBLOX_API_KEY=           (Open Cloud API key)
+
+# Opsiyonel
+ROBLOX_COOKIE=            (Sadece /bransdan-at için; .ROBLOSECURITY cookie)
+
+Not: ACTIVE_CHANNEL_ID ne?
+- Bot sadece bu kanal içinde komut çalıştırır.
+- Discord Developer Mode aç -> kanala sağ tık -> Copy Channel ID.
+
+3) Paketleri Kurma
+PowerShell / Terminal:
+- npm install
+
+4) Slash Komutları Discord’a Kaydetme
+- npm run register
+
+Eğer "Missing DISCORD_TOKEN or DISCORD_CLIENT_ID or DISCORD_GUILD_ID" hatası alırsan:
+- .env dosyasını oluşturmadın veya değerleri boş bıraktın.
+
+5) Botu Çalıştırma
+- npm start
+
+6) Ayarlar Dosyası (data/settings.json)
+Bot ilk kez çalışınca otomatik oluşur:
+- data/settings.json
+
+Bu dosyada:
+- ownerIds
+- ana grup ayarları (main)
+- branşlar (branches)
+- rank listeleri (ranks)
+
+Ana grup API key:
+- ROBLOX_API_KEY kullanılır.
+- İstersen settings.main.apiKey içine de ekleyebilirsin.
+
+7) Rank Sistemi
+Terfi/Tenzil için bot "ranks" listesini kullanır.
+- main.ranks: ana grup terfi/tenzil
+- branches[code].ranks: branş terfi/tenzil
+
+Rank örneği:
+{
+  "name": "Nazır",
+  "rank": 255,
+  "rutbe": "HQ"
+}
+
+8) Branş Yönetimi (Owner)
+- /brans-ekle isim:<...> groupid:<...> hcminrank:<...> hqminrank:<...> apikey:<opsiyonel>
+  -> branş kodu üretir ve settings.json’a ekler.
+
+Örnek branş (data/settings.json içinde):
+{
+  "branches": {
+    "asr001": {
+      "name": "Askeriye",
+      "groupId": 12345678,
+      "hcMinRank": 180,
+      "hqMinRank": 220,
+      "apiKey": "",
+      "logChannelId": "",
+      "logs": {
+        "terfi": true,
+        "tenzil": true,
+        "rutbeDegis": true,
+        "eklemeSilme": true,
+        "plainText": false
+      },
+      "ranks": [
+        { "name": "Er", "rank": 1, "rutbe": "LR" },
+        { "name": "Teğmen", "rank": 100, "rutbe": "HR" },
+        { "name": "Komutan", "rank": 200, "rutbe": "HC" }
+      ]
+    }
+  }
+}
+
+- /brans-sil brans:<...>
+
+- /log-kanal-ayarla kanal:<...>  (Ana grup log kanalı)
+- /brans-log-kanal-ayarla brans:<...> kanal:<...>
+
+9) Yetki Kuralları (Özet)
+- Owner (OWNER_DISCORD_ID) bypass eder.
+- HC/HQ rütbeleri rank ID üzerinden kontrol edilir.
+- Terfi / rütbe-değiş: eşit veya daha yüksek rütbeye işlem yok.
+- Tenzil: sınırsız (yine de branş yetkisi gerekir).
+
+10) Branş Autocomplete
+- Branş seçme alanında sadece kullanıcının yetkili olduğu branşlar görünür.
+- Owner tüm branşları görür.
+
+11) Hatalı Kullanım ve Timeout
+- Yanlış kanalda komut denemesi veya bazı hatalı denemeler strike olarak yazılır.
+- 1 saat içinde 3 strike -> 10 dk Discord timeout (botun ModerateMembers izni varsa).
+
+12) Sık Sorunlar
+- Komutlar görünmüyor:
+  - npm run register çalıştır.
+  - DISCORD_GUILD_ID doğru mu kontrol et.
+
+- Timeout atmıyor:
+  - Botun "Timeout Members" / "Moderate Members" izni olmalı.
+
+- /bransdan-at çalışmıyor:
+  - ROBLOX_COOKIE yoksa çalışmaz.
+  - Cookie çok hassas, paylaşma ve repoya koyma.
