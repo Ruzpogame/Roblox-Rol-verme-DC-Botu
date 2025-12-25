@@ -3,6 +3,7 @@ OİO gibi askeri Roblox oyunları için Discord üzerinden rol verme botu
 
 
 Discord Roblox Branş & Rütbe Yönetim Botu
+Gereksimler: Node.js
 
 Bu bot, Discord üzerinden Roblox grup ve branş (sub-group) rütbe yönetimini güvenli ve yetkili bir şekilde yapabilmek için geliştirilmiştir.
 RoWiFi API entegrasyonu sayesinde kullanıcı doğrulaması yapılır ve manuel kullanıcı adı sormaya gerek kalmaz.
